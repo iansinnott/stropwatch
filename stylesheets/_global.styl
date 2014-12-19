@@ -1,0 +1,180 @@
+global-reset()
+
+// Variables {{{
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+content-width = 1100px
+body-font = 'Helvetica Neue', Helvetica, Arial, sans-serif
+black = #464848
+blue = #4576AF
+yellow = #FBF6AE
+gray = #8A8A8A
+gray-bd = #949599
+gray-bg = #EFEFEF
+gray-txt = #9B9B9B
+maroon = #C15467
+purple = #3E4084
+off-white = #fafafa
+red = #D0191C
+
+// }}} END Variables
+
+// Mixins {{{
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Calculate a px amount as a percentage
+// Note that the '' are necessary to cast as a percentage
+pct(number)
+  unit(number / content-width * 100, '%')
+
+// Create a downwards triangle
+triangle-down(color = red, w = 50px, h = 25px)
+  position relative
+  &:after
+    content ''
+    width 0
+    height 0
+    border-left (w/2) solid transparent
+    border-right (w/2) solid transparent
+    border-top h solid color
+    {block}
+
+
+// }}} END Mixins
+
+// General {{{
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+*
+  box-sizing border-box
+
+body
+  font-family body-font
+  background gray-bg
+  color black
+  font-size 18px
+
+img
+  max-width 100%
+  width auto
+
+// }}} END General
+
+// Generated Styles
+// You will likely want to change these
+
+h1
+  font-weight 500
+  font-size 48px
+  margin-bottom 20px
+
+#time
+  font-size 105px
+  text-align center
+  margin-bottom 40px
+
+footer
+  margin-top 200px
+
+.container
+  center(content-width, pct(20))
+  padding-top 100
+
+.copy
+  color lighten(gray, 60%)
+
+#wrap
+  margin-top 120px
+  background white
+  padding 40px
+  max-width 500px
+
+btn(color = black)
+  font-family 'Helvetica Neue'
+  font-size 24px
+  font-weight 100
+  border 1px solid color
+  color color
+  background transparent
+  width 120px
+  height 120px
+  border-radius 50%
+  cursor pointer
+  &:hover
+    background color
+    color white
+
+.controls
+  overflow hidden
+  .lap
+  .reset
+    float right
+  .start
+  .stop
+    float left
+
+
+  // Initial state
+  &.initial
+    .stop
+    .reset
+      display none
+    .lap
+      btn(lighten(black, 60%))
+      cursor default
+      pointer-events none
+      &:hover
+        color lighten(black, 60%)
+        background transparent
+
+  // Running state
+  &.running
+    .stop
+    .lap
+      display block
+    .start
+    .reset
+      display none
+
+  // Paused state
+  &.paused
+    .start
+    .reset
+      display block
+    .stop
+    .lap
+      display none
+
+button
+  &.lap
+  &.reset
+    btn(black)
+  &.start
+    btn(green)
+  &.stop
+    btn(red)
+
+
+.hidden
+  display none
+
+.table
+  display table
+.cell
+  display table-cell
+
+#laps
+  margin-top 80px
+  width 100%
+  tr:first-child
+    td
+      padding-top 0
+  td
+    padding-top 20px
+    font-size 28px
+    font-weight 100
+    font-family 'Helvetica Neue'
+    text-align right
+  .times
+    text-align left
+

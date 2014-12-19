@@ -1,0 +1,18 @@
+extends layout
+block content
+  section
+    #wrap.container
+      h1#time 00:00:00
+      .controls.initial
+        button.start START
+        button.stop STOP
+        button.lap.disabled LAP
+        button.reset RESET
+
+      //- Lap times should be appended here
+      table#laps.hidden
+
+  script(type='template')
+    tr.row
+      td.times 3
+      td.lap-time 00:00:00
