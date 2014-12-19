@@ -3,7 +3,8 @@ global-reset()
 // Variables {{{
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-content-width = 1100px
+content-width = 500px
+
 body-font = 'Helvetica Neue', Helvetica, Arial, sans-serif
 black = #464848
 blue = #4576AF
@@ -77,17 +78,23 @@ footer
   margin-top 200px
 
 .container
-  center(content-width, pct(20))
+  center(content-width)
   padding-top 100
 
 .copy
   color lighten(gray, 60%)
 
 #wrap
-  margin-top 120px
+  margin-top 40px
   background white
   padding 40px
-  max-width 500px
+  border-radius 3px
+
+.stopwatch
+  margin-top 120px
+  text-align center
+  font-size 58px
+  font-family 'Rockwell'
 
 btn(color = black)
   font-family 'Helvetica Neue'
