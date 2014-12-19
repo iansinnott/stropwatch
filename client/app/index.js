@@ -4,6 +4,10 @@ var $ = require('jquery');
 window.$ = $;
 window._ = require('lodash');
 
+// This stores the ID of the running interval function. Necessary to clear the
+// interval.
+var tickID;
+
 /**
  * Basically a partial application. Fixes the radix to ten so that parseInt can
  * be used as a callback.
@@ -43,42 +47,43 @@ function _formatTime(obj) {
  * Tick the clock
  */
 function tick() {
+
   var $time = $('#time'),
       clock = _getTime($time);
 
-  setInterval(function() {
+  if (clock.miliseconds === 99) {
+    clock.miliseconds = 0;
+    clock.seconds += 1;
+  } else if (clock.seconds === 59) {
+    clock.miliseconds = 0;
+    clock.seconds = 0;
+    clock.minutes += 1;
+  } else {
+    clock.miliseconds += 1;
+  }
 
-    if (clock.miliseconds === 99) {
-      clock.miliseconds = 0;
-      clock.seconds += 1;
-    } else if (clock.seconds === 59) {
-      clock.miliseconds = 0;
-      clock.seconds = 0;
-      clock.minutes += 1;
-    } else {
-      clock.miliseconds += 1;
-    }
-
-    $time.text(_formatTime(clock));
-  }, 10);
+  $time.text(_formatTime(clock));
 }
 
 function startTimer(e) {
   $(this).parents('.controls')
-    .removeClass('stopped')
+    .removeClass('initial paused')
     .addClass('running');
-  tick();
+  tickID = setInterval(tick, 10);
 }
 
 function stopTimer(e) {
   $(this).parents('.controls')
     .removeClass('running')
-    .addClass('stopped');
-  console.log('timer stopped');
+    .addClass('paused');
+  clearInterval(tickID);
 }
 
 function resetTimer(e) {
-  console.log('reset that timer');
+  $(this).parents('.controls')
+    .removeClass('paused')
+    .addClass('initial');
+  $('#time').text('00:00:00');
 }
 
 function recordLap(e) {
@@ -89,10 +94,10 @@ function recordLap(e) {
 module.exports = {
 
   initialize: function() {
-    $('.start').on('click', startTimer);
-    $('.stop').on('click', stopTimer);
-    $('.reset').on('click', resetTimer);
-    $('.lap').on('click', recordLap);
+    $('.start').click(startTimer);
+    $('.stop').click(stopTimer);
+    $('.reset').click(resetTimer);
+    $('.lap').click(recordLap);
   }
 
 };
